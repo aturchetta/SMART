@@ -2,7 +2,7 @@
 % Please edit documentation in R/Main.R
 \name{SMART.binary}
 \alias{SMART.binary}
-\title{Simulating a 2-Stages SMART With Binary Final Outcome}
+\title{Simulating a 2-Stages SMART with Binary Final Outcome}
 \usage{
 SMART.binary(n, p_A, p_AC, p_AD, p_AA, p_B, p_BE, p_BF, p_BB)
 }

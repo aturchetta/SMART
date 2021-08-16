@@ -1,9 +1,9 @@
 
-#' @import LaplacesDemon
+#' @import LaplacesDemon qpdf
 #' @importFrom stats integrate pnorm qnorm rnorm
 NULL
 
-#' Simulating a 2-Stages SMART With Binary Final Outcome
+#' Simulating a 2-Stages SMART with Binary Final Outcome
 #' @description simulates a 2-stages SMART with binary final outcome in the
 #' standard design where responders to the first treatment are not
 #' re-randomized.
@@ -180,7 +180,7 @@ SMART.continuous <-  function(n, p_A, p_B,  phi_1, phi_2, phi_3, phi_4,phi_5, ph
 
 
 
-#' Computing the Power For a 2-Stages SMART
+#' Computing the Power for a 2-Stages SMART
 #' @description Computes the Bayesian marginal power for the comparison of two strategies
 #' that start with a different initial treatment in a 2-stages SMART in the
 #' standard design where responders to the first treatment are not re-randomized.
@@ -226,7 +226,7 @@ SMART.power <- function(n,vn, sigma_n, theta_0, sigma_0, theta_d, sigma_d,
 
 
 
-#' Estimating the Strategy Mean and Its Variance For a 2-Stages SMART
+#' Estimating the Strategy Mean and its Variance for a 2-Stages SMART
 #' @description Computes the strategy mean and the estimator's variance (tau^2)
 #' in a 2-stages SMART in the
 #' standard design where responders to the first treatment are not re-randomized.
@@ -236,7 +236,7 @@ SMART.power <- function(n,vn, sigma_n, theta_0, sigma_0, theta_d, sigma_d,
 #' @param R vector of responses to the stage-1 intervention
 #' (1 for responders and 0 for non-responders).
 #' @param id1 label of the stage-1 intervention used in \code{tr1} of the strategy in question.
-#' @param id2 label of the stage-2 intervention used in \code{tr2} of the strategy in question.
+#' @param id2 label of the stage-2 intervention used in \code{tr2} for non-responders of the strategy in question.
 #'
 #' @return A list of two values. \code{mu} is the estimated strategy mean and
 #' \code{tau} the estimator's variance.
@@ -273,7 +273,8 @@ SMART.est <- function(tr1 , tr2, outcome, R, id1, id2){
 #' the parameters \code{(tr1, tr2, outcome, R, id1_study, id2_study, id1_ref, id2_ref)} or
 #' the direct specification of \code{vn} and \code{sigma_n}.
 #' @param n_grid vector of sample size values used to search for the optimal sample size.
-#' @param theta_0 mean of the analysis prior Normal density.
+#' @param theta_0 mean of the analysis prior Normal density. If \code{theta_0="pilot"}, this density
+#' is centered at the difference between mean strategies estimated from the pilot study.
 #' @param sigma_0 standard deviation of the analysis prior Normal density.
 #' @param theta_d mean of the design prior Normal density.
 #' @param sigma_d standard deviation of the design prior Normal density.
@@ -289,10 +290,10 @@ SMART.est <- function(tr1 , tr2, outcome, R, id1, id2){
 #' @param id2_study label of the stage-2 intervention used in \code{tr2} of the strategy 1.
 #' @param id1_ref label of the stage-1 intervention used in \code{tr1} of the strategy 2.
 #' @param id2_ref label of the stage-2 intervention used in \code{tr2} of the strategy 2.
-#' @param v0,k0,u_0,sigma_p parameters of the Normal-inverse-chi-squared (NIX)
+#' @param v_p,k_p,u_p,sigma_p parameters of the Normal-inverse-chi-squared (NIX)
 #' prior distribution used to estimate the posterior distribution of the variance
-#' components. The default choice is \code{v0=0.5,k0=1,u_0=0,sigma_p=4}.
-#' @param vn Degrees of freedom of the inverse chi-squared distribution of tau_1+tau_2.
+#' components. The default choice is \code{v_p=0.5,k_p=1,u_p=0,sigma_p=4}.
+#' @param vn degrees of freedom of the inverse chi-squared distribution of tau_1+tau_2.
 #' @param sigma_n non-centrality parameter of the inverse chi-squared distribution of tau_1+tau_2.
 #' @param upper_int upper limit of the integral that marginalizes the Bayesian power function.
 #' The default is \code{Inf}. If an error occurs regarding the integral being divergent
@@ -325,11 +326,11 @@ SMART.est <- function(tr1 , tr2, outcome, R, id1, id2){
 SMART.ss <- function(n_grid, theta_0, sigma_0, theta_d, sigma_d, power, epsilon,
                     tr1 = NULL , tr2 = NULL, outcome = NULL, R = NULL,
                     id1_study = NULL, id2_study = NULL, id1_ref = NULL, id2_ref = NULL,
-                    v0 = 0.5, k0 = 1, u_0 = 0, sigma_p = 4,
+                    v_p = 0.5, k_p = 1, u_p = 0, sigma_p = 4,
                     vn = NULL, sigma_n = NULL,
                     upper_int = Inf, save_grid = F){
 
-  op1 <- list(tr1 , tr2, outcome, R, id1_study, id2_study, id1_ref, id2_ref, v0, k0)
+  op1 <- list(tr1 , tr2, outcome, R, id1_study, id2_study, id1_ref, id2_ref, v_p, k_p)
 
   op2 <- list(vn, sigma_n)
 
@@ -353,17 +354,20 @@ SMART.ss <- function(n_grid, theta_0, sigma_0, theta_d, sigma_d, power, epsilon,
 
     n_pilot <- length(outcome)
 
-    vn      <- v0+n_pilot
-    sigma_n <- (1/vn)*(v0*sigma_p+(tau_1+tau_2)*n_pilot+n_pilot*k0*(u_0-(mu_1-mu_2))/(k0+n_pilot))
+    vn      <- v_p+n_pilot
+    sigma_n <- (1/vn)*(v_p*sigma_p+(tau_1+tau_2)*n_pilot+n_pilot*k_p*(u_p-(mu_1-mu_2))/(k_p+n_pilot))
 
   }
 
+  if(theta_0=="pilot"){
+    theta_0 <- mu_1 - mu_2
+  }
   power.grid <- SMART.power(n = n_grid, vn = vn, sigma_n = sigma_n, theta_0 = theta_0,
                             sigma_0 = sigma_0, theta_d = theta_d, sigma_d = sigma_d, epsilon = epsilon,
                             upper_int = upper_int)
 
   ss  <- n_grid[power.grid>=power][1]
-  pow <- power.grid[ss]
+  pow <- power.grid[power.grid>=power][1]
 
   if(is.na(ss)){
     stop("The upper bound of n_grid might be not high enough. Please try increasing it")

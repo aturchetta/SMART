@@ -2,7 +2,7 @@
 % Please edit documentation in R/Main.R
 \name{SMART.est}
 \alias{SMART.est}
-\title{Estimating the Strategy Mean and Its Variance For a 2-Stages SMART}
+\title{Estimating the Strategy Mean and its Variance for a 2-Stages SMART}
 \usage{
 SMART.est(tr1, tr2, outcome, R, id1, id2)
 }
@@ -18,7 +18,7 @@ SMART.est(tr1, tr2, outcome, R, id1, id2)
 
 \item{id1}{label of the stage-1 intervention used in \code{tr1} of the strategy in question.}
 
-\item{id2}{label of the stage-2 intervention used in \code{tr2} of the strategy in question.}
+\item{id2}{label of the stage-2 intervention used in \code{tr2} for non-responders of the strategy in question.}
 }
 \value{
 A list of two values. \code{mu} is the estimated strategy mean and

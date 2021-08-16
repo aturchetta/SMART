@@ -2,7 +2,7 @@
 % Please edit documentation in R/Main.R
 \name{SMART.ss}
 \alias{SMART.ss}
-\title{Estimating the Sample Size Of a 2-Stages SMART}
+\title{Estimating the Sample Size of a 2-Stages SMART}
 \usage{
 SMART.ss(
   n_grid,
@@ -20,9 +20,9 @@ SMART.ss(
   id2_study = NULL,
   id1_ref = NULL,
   id2_ref = NULL,
-  v0 = 0.5,
-  k0 = 1,
-  u_0 = 0,
+  v_p = 0.5,
+  k_p = 1,
+  u_p = 0,
   sigma_p = 4,
   vn = NULL,
   sigma_n = NULL,
@@ -33,7 +33,8 @@ SMART.ss(
 \arguments{
 \item{n_grid}{vector of sample size values used to search for the optimal sample size.}
 
-\item{theta_0}{mean of the analysis prior Normal density.}
+\item{theta_0}{mean of the analysis prior Normal density. If \code{theta_0="pilot"}, this density
+is centered at the difference between mean strategies estimated from the pilot study.}
 
 \item{sigma_0}{standard deviation of the analysis prior Normal density.}
 
@@ -63,11 +64,11 @@ Bayesian significance level.}
 
 \item{id2_ref}{label of the stage-2 intervention used in \code{tr2} of the strategy 2.}
 
-\item{v0, k0, u_0, sigma_p}{parameters of the Normal-inverse-chi-squared (NIX)
+\item{v_p, k_p, u_p, sigma_p}{parameters of the Normal-inverse-chi-squared (NIX)
 prior distribution used to estimate the posterior distribution of the variance
-components. The default choice is \code{v0=0.5,k0=1,u_0=0,sigma_p=4}.}
+components. The default choice is \code{v_p=0.5,k_p=1,u_p=0,sigma_p=4}.}
 
-\item{vn}{Degrees of freedom of the inverse chi-squared distribution of tau_1+tau_2.}
+\item{vn}{degrees of freedom of the inverse chi-squared distribution of tau_1+tau_2.}
 
 \item{sigma_n}{non-centrality parameter of the inverse chi-squared distribution of tau_1+tau_2.}
 
@@ -80,7 +81,10 @@ a large finite value for \code{upper_int}.}
 is stored. The default is FALSE.}
 }
 \value{
-kjkjkjknkjkj
+By default, the function returns two values: the
+estimated sample size and corresponding power. If \code{save_grid = F},
+an additional data frame containing the estimated power for each value of
+\code{n_grid} is returned.
 }
 \description{
 Computes the required sample size

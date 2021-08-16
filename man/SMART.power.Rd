@@ -2,7 +2,7 @@
 % Please edit documentation in R/Main.R
 \name{SMART.power}
 \alias{SMART.power}
-\title{Computing the Power For a 2-Stages SMART}
+\title{Computing the Power for a 2-Stages SMART}
 \usage{
 SMART.power(
   n,
