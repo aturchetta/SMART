@@ -26,6 +26,7 @@ SMART.ss(
   sigma_p = 4,
   vn = NULL,
   sigma_n = NULL,
+  alt = "one-sided",
   upper_int = Inf,
   save_grid = F
 )
@@ -71,6 +72,9 @@ components. The default choice is \code{v_p=0.5,k_p=1,u_p=0,sigma_p=4}.}
 \item{vn}{degrees of freedom of the inverse chi-squared distribution of tau_1+tau_2.}
 
 \item{sigma_n}{non-centrality parameter of the inverse chi-squared distribution of tau_1+tau_2.}
+
+\item{alt}{Alternative hypothesis type. The default option is "one-sided". Use "two-sided" for
+a two-sided alternative hypothesis type.}
 
 \item{upper_int}{upper limit of the integral that marginalizes the Bayesian power function.
 The default is \code{Inf}. If an error occurs regarding the integral being divergent

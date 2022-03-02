@@ -295,6 +295,8 @@ SMART.est <- function(tr1 , tr2, outcome, R, id1, id2){
 #' components. The default choice is \code{v_p=0.5,k_p=1,u_p=0,sigma_p=4}.
 #' @param vn degrees of freedom of the inverse chi-squared distribution of tau_1+tau_2.
 #' @param sigma_n non-centrality parameter of the inverse chi-squared distribution of tau_1+tau_2.
+#' @param alt Alternative hypothesis type. The default option is "one-sided". Use "two-sided" for
+#' a two-sided alternative hypothesis type.
 #' @param upper_int upper limit of the integral that marginalizes the Bayesian power function.
 #' The default is \code{Inf}. If an error occurs regarding the integral being divergent
 #' or the upper bound of n_grid being high enough despite increasing it, try selecting
@@ -327,7 +329,7 @@ SMART.ss <- function(n_grid, theta_0, sigma_0, theta_d, sigma_d, power, epsilon,
                     tr1 = NULL , tr2 = NULL, outcome = NULL, R = NULL,
                     id1_study = NULL, id2_study = NULL, id1_ref = NULL, id2_ref = NULL,
                     v_p = 0.5, k_p = 1, u_p = 0, sigma_p = 4,
-                    vn = NULL, sigma_n = NULL,
+                    vn = NULL, sigma_n = NULL, alt = "one-sided",
                     upper_int = Inf, save_grid = F){
 
   op1 <- list(tr1 , tr2, outcome, R, id1_study, id2_study, id1_ref, id2_ref, v_p, k_p)
@@ -362,6 +364,11 @@ SMART.ss <- function(n_grid, theta_0, sigma_0, theta_d, sigma_d, power, epsilon,
   if(theta_0=="pilot"){
     theta_0 <- mu_1 - mu_2
   }
+
+  if(alt=="two-sided"){
+    epsilon <- epsilon/2
+  }
+
   power.grid <- SMART.power(n = n_grid, vn = vn, sigma_n = sigma_n, theta_0 = theta_0,
                             sigma_0 = sigma_0, theta_d = theta_d, sigma_d = sigma_d, epsilon = epsilon,
                             upper_int = upper_int)
