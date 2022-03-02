@@ -1,14 +1,14 @@
 ---
-title: "SMARTsize"
+title: "bayesSMARTsize"
 header-includes:
    - \usepackage{bbm}
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{SMARTsize}
+  %\VignetteIndexEntry{bayesSMARTsize}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
   
-bibliography: C:/Users/arman/Desktop/McGill/Workshops/R Package/SMARTsize/vignettes/bibliography.bib
+bibliography: C:/Users/arman/Desktop/McGill/Workshops/R Package/bayesSMARTsize/vignettes/bibliography.bib
 ---
 
 ```{r, include = FALSE}
@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-`SMARTsize` is a package which implements the functions for the Bayesian 'two priors' approach sample size estimation of a 2-stages sequential multiple assignment randomized trial (SMART) with continuous outcomes for the comparison of two strategies with different initial treatments. For a full description of this methodology, please refer to @smart_bay. In particular, the SMART design for which sample size formulae are provided is the standard scheme represented below, where responders to the stage-1 intervention are not re-randomized. 
+`bayesSMARTsize` is a package which implements the functions for the Bayesian 'two priors' approach sample size estimation of a 2-stages sequential multiple assignment randomized trial (SMART) with continuous outcomes for the comparison of two strategies with different initial treatments. For a full description of this methodology, please refer to @smart_bay. In particular, the SMART design for which sample size formulae are provided is the standard scheme represented below, where responders to the stage-1 intervention are not re-randomized. 
 
 
 ![SMART scheme](SMART.png){#id .class width=50% height=50%}
@@ -29,7 +29,7 @@ Despite this methodology is built on the continuous outcome setting, it can stil
 
 
 ```{r setup}
-library(SMARTsize)
+library(bayesSMARTsize)
 set.seed(123)
 ```
 

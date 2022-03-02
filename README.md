@@ -1,4 +1,4 @@
-BayesSMARTsize
+bayesSMARTsize
 ================
 
 
@@ -7,7 +7,7 @@ BayesSMARTsize
 
 # Introduction
 
-`BayesSMARTsize` is a package which implements the functions for the
+`bayesSMARTsize` is a package which implements the functions for the
 Bayesian ‘two priors’ approach sample size estimation of a 2-stages
 sequential multiple assignment randomized trial (SMART) with continuous
 outcomes for the comparison of two strategies with different initial
@@ -26,7 +26,7 @@ can still be used for binary outcomes, as the Normal approximation
 performs well.
 
 ``` r
-library(BayesSMARTsize)
+library(bayesSMARTsize)
 set.seed(123)
 ```
 

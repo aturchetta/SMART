@@ -1,4 +1,4 @@
-Package: BayesSMARTsize
+Package: bayesSMARTsize
 Type: Package
 Title: Bayesian Sample Size for 2-Stages SMART Studies
 Version: 0.1.0
