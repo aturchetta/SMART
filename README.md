@@ -26,6 +26,8 @@ can still be used for binary outcomes, as the Normal approximation
 performs well.
 
 ``` r
+library(devtools)
+install_github("aturchetta/bayesSMARTsize")
 library(bayesSMARTsize)
 set.seed(123)
 ```
@@ -155,12 +157,19 @@ includes the power level estimated for each value of `n_grid` is
 returned:
 
 ``` r
-grid <- SMART.ss(n_grid = seq(100,1200), theta_0=0, sigma_0 = 0.15,
+grid <- SMART.ss(n_grid = seq(400,1000), theta_0=0, sigma_0 = 0.15,
                  theta_d=0.1, sigma_d = 0.01, power = 0.9, epsilon = 0.05,
                  tr1 = sim_bin$tr1, tr2 = sim_bin$tr2, outcome = sim_bin$outcome, R = sim_bin$R,
                  id1_study = "A", id2_study = "AB", id1_ref = "B", id2_ref = "BE", save_grid=TRUE)
 
-plot(grid[[2]]$n, grid[[2]]$Power, type = "l", lwd=2, xlab = "n", ylab = "Power", main = "Power curve")
+head(grid[[2]])
+#>     n     Power
+#> 1 400 0.5896011
+#> 2 401 0.5906061
+#> 3 402 0.5916087
+#> 4 403 0.5926091
+#> 5 404 0.5936072
+#> 6 405 0.5946029
 ```
 
 <img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
@@ -168,7 +177,7 @@ plot(grid[[2]]$n, grid[[2]]$Power, type = "l", lwd=2, xlab = "n", ylab = "Power"
 Additionally, it is possible to center the analysis prior
 *π*<sub>0</sub> at the mean difference between strategies estimated via
 pilot data through the option `theta_0="pilot"`. In this case,
-incrementing the variance of the analysis prior to 0.4<sup>2</sup>, the
+incrementing the variance of the analysis prior to 0.5<sup>2</sup>, the
 sample size is reduced to
 
 ``` r
