@@ -172,8 +172,6 @@ head(grid[[2]])
 #> 6 405 0.5946029
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
-
 Additionally, it is possible to center the analysis prior
 *π*<sub>0</sub> at the mean difference between strategies estimated via
 pilot data through the option `theta_0="pilot"`. In this case,
