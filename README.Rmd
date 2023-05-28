@@ -30,6 +30,8 @@ Despite this methodology is built on the continuous outcome setting, it can stil
 
 
 ```{r setup}
+library(devtools)
+install_github("aturchetta/bayesSMARTsize")
 library(bayesSMARTsize)
 set.seed(123)
 ```
@@ -81,7 +83,17 @@ SMART.est(tr1 = sim_bin$tr1, tr2 = sim_bin$tr2, outcome = sim_bin$outcome,
 
 # Sample size estimation
 
-`SMART.ss` computes the required sample size to achieve the desired level of power. Let us consider the alternative hypothesis $\text{H}_1: \mu_{{d̅}_k^1}-\mu_{{d̅}_k^2}> 0$.
+`SMART.ss` computes the required sample size to achieve the desired level of power. Let us consider the system of hypotheses
+
+\[
+\left\{
+                \begin{array}{ll}
+                  \text{H}_0: \mu_{{d̅}_k^1}-\mu_{{d̅}_k^2}=0\\
+                  \text{H}_1: \mu_{{d̅}_k^1}-\mu_{{d̅}_k^2}> 0.
+                \end{array}
+              \right.
+\]
+
 The Bayesian methodology implemented in this function is based on the use of the posterior distribution of the variance components estimated from pilot data to marginalize the power function. Therefore, this function requires data from the pilot study through the set of parameters \{`tr1, tr2, outcome, R, id1_study, id2_study, id1_ref, id2_ref`\}. Alternatively, one can directly specify the posterior parameters of the inverse chi-squared distribution of $\tau^2_{{d̅}_k^1}+\tau^2_{{d̅}_k^2}$ through the parameters `vn` and `sigma_n`. Note that only one of the two choices must be specified in the function. Let us consider the data simulated in the binary outcome setting as the result of a pilot study and let us size the full-scale SMART for the comparison of '${d̅}_k^1$: administer A and, if there is no response, switch to C" and ‘${d̅}_k^2$:  administer B and, if there is no response,switch to E’. We size the SMART in order to achieve a $90\%$ power under the design prior distribution of the mean difference between strategies $\pi_d(\theta)= \mathcal{N}\left(\theta; 0.1, 0.02^2\right)$ and we set the Bayesian significance level to 0.95 (`epsilon=0.05`). To complete the Bayesian framework, we set the analysis prior $\pi_0(\theta)= \mathcal{N}\left(\theta; 0, 0.15^2\right)$. For further details on this methodology, please consult @smart_bay. Finally, a grid of sample size values which is used to search for the optimal sample size needs to be specified through `n_grid`. By default, the function outputs the estimated sample size and the corresponding power:
 
 ```{r}
@@ -95,17 +107,16 @@ Selecting the option `save_grid=TRUE`, an additional data frame which includes t
 `n_grid` is returned:
 
 ```{r, fig.width=6}
-grid <- SMART.ss(n_grid = seq(100,1200), theta_0=0, sigma_0 = 0.15,
+grid <- SMART.ss(n_grid = seq(400,1000), theta_0=0, sigma_0 = 0.15,
                  theta_d=0.1, sigma_d = 0.01, power = 0.9, epsilon = 0.05,
                  tr1 = sim_bin$tr1, tr2 = sim_bin$tr2, outcome = sim_bin$outcome, R = sim_bin$R,
                  id1_study = "A", id2_study = "AB", id1_ref = "B", id2_ref = "BE", save_grid=TRUE)
 
-plot(grid[[2]]$n, grid[[2]]$Power, type = "l", lwd=2, xlab = "n", ylab = "Power", main = "Power curve")
-
+head(grid[[2]])
 ```
 
 
-Additionally, it is possible to center the analysis prior $\pi_0$ at the mean difference between strategies estimated via pilot data through the option `theta_0="pilot"`. In this case, incrementing the variance of the analysis prior to $0.4^2$, the sample size is reduced to
+Additionally, it is possible to center the analysis prior $\pi_0$ at the mean difference between strategies estimated via pilot data through the option `theta_0="pilot"`. In this case, incrementing the variance of the analysis prior to $0.5^2$, the sample size is reduced to
 
 ```{r}
 SMART.ss(n_grid = seq(100,1200), theta_0="pilot", sigma_0 = 0.5,
