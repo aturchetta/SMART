@@ -194,8 +194,7 @@ SMART.ss(n_grid = seq(100,1200), theta_0="pilot", sigma_0 = 0.5,
 <div id="ref-smart_bay" class="csl-entry">
 
 Turchetta, Armando, Erica EM Moodie, David A Stephens, and Sylvie D
-Lambert. 2021. “Bayesian Sample Size Calculations for SMART Studies.”
-*arXiv Preprint arXiv:2108.01041*.
+Lambert. 2022. “Bayesian Sample Size Calculations for Comparing Two Strategies in SMART Studies.” Biometrics.
 
 </div>
 
